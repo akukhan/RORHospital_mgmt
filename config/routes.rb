@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   resources :patients
 
-  # get 'doctor/dashboard', to: 'doctor/dashboard', as: 'doctor_dashboard'
   get 'doctor/dashboard', to: 'doctor#dashboard', as: 'doctor_dashboard'
 
   root to:'home#index'
