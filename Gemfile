@@ -65,3 +65,5 @@ end
 gem "devise", "~> 4.9"
 gem 'groupdate'
 gem 'chartkick'
+gem 'dotenv-rails', groups: [:development, :test]
+
