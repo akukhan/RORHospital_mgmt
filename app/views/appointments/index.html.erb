@@ -1,0 +1,23 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Appointments" %>
+<div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Appointments</h1>
+    <%= link_to "New Appointment", new_appointment_path, class: "btn btn-primary" %>
+  </div>
+
+  <div id="appointments" class="row">
+    <% @appointments.each do |appointment| %>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <%= render appointment %>   
+        <div class="card-footer text-end bg-light" style="
+            position: relative;
+            top: -35px;" >     
+          <%= link_to "View appointment details", appointment, class: "btn btn-sm btn-outline-primary"  %>
+          </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

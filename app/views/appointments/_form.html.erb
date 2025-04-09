@@ -1,0 +1,43 @@
+<%= form_with(model: appointment, class: "mt-4") do |form| %>
+  <% if appointment.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+
+      <ul>
+        <% appointment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :patient_id, style: "display: block" %>
+    <%= form.text_field :patient_id %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :appointment_date, style: "display: block" %>
+    <%= form.datetime_field :appointment_date %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :reason, style: "display: block" %>
+    <%= form.textarea :reason %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :status, style: "display: block" %>
+    <%= form.select :status, Appointment.statuses.keys.map { |w| [w.titleize, w] }, {}, class: "form-select" %>
+
+  </div>
+
+  <div>
+    <%= form.submit "Save Changes", class: "btn btn-primary"%>
+  </div>
+<% end %>

@@ -1,0 +1,22 @@
+<p style="color: green"><%= notice %></p>
+<div class="container mt-4">
+  <div class="card shadow-sm" style="border-radius: 12px;">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        Appointment Details
+      </h4>
+    </div>
+    <div class="card-body">
+      <%= render @appointment %>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <div>
+          <%= link_to "Edit Appointment", edit_appointment_path(@appointment), class: "btn btn-warning btn-sm" %>
+          <%= link_to "Back to Appointments", appointments_path, class: "btn btn-secondary btn-sm" %>
+      </div>
+      <div>
+        <%= button_to "Delete Appointment", @appointment, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+      </div>
+    </div>
+
+</div>

@@ -1,0 +1,166 @@
+# <!-- app/views/patient_portal/dashboard.html.erb -->
+# <div class="row mt-4">
+#   <div class="col-md-12">
+#     <h1>Welcome, <%= @patient.first_name %></h1>
+#     <p class="lead">This is your personal health portal.</p>
+#   </div>
+# </div>
+
+# <div class="row mt-4">
+#   <div class="col-md-6">
+#     <div class="card mb-4">
+#       <div class="card-header d-flex justify-content-between align-items-center">
+#         <h3 class="mb-0">Upcoming Appointments</h3>
+#         <%= link_to "Request Appointment", patient_portal_request_appointment_path, class: "btn btn-sm btn-primary" %>
+#       </div>
+#       <div class="card-body">
+#         <% if @upcoming_appointments.any? %>
+#           <table class="table">
+#             <thead>
+#               <tr>
+#                 <th>Date</th>
+#                 <th>Doctor</th>
+#                 <th>Reason</th>
+#               </tr>
+#             </thead>
+#             <tbody>
+#               <% @upcoming_appointments.each do |appointment| %>
+#                 <tr>
+#                   <td><%= appointment.appointment_date.strftime("%b %d, %Y at %I:%M %p") %></td>
+#                   <td><%= appointment.user.email %></td>
+#                   <td><%= appointment.reason %></td>
+#                 </tr>
+#               <% end %>
+#             </tbody>
+#           </table>
+#         <% else %>
+#           <div class="alert alert-info">
+#             You don't have any upcoming appointments.
+#             <%= link_to "Request one now?", patient_portal_request_appointment_path %>
+#           </div>
+#         <% end %>
+#       </div>
+#     </div>
+#   </div>
+  
+#   <div class="col-md-6">
+#     <div class="card">
+#       <div class="card-header d-flex justify-content-between align-items-center">
+#         <h3 class="mb-0">Medical Records</h3>
+#         <%= link_to "View All", patient_portal_medical_history_path, class: "btn btn-sm btn-primary" %>
+#       </div>
+#       <div class="card-body">
+#         <% if @patient.medical_records.any? %>
+#           <div class="list-group">
+#             <% @patient.medical_records.order(created_at: :desc).limit(3).each do |record| %>
+#               <div class="list-group-item">
+#                 <div class="d-flex w-100 justify-content-between">
+#                   <h5 class="mb-1"><%= record.title %></h5>
+#                   <small><%= record.created_at.strftime("%b %d, %Y") %></small>
+#                 </div>
+#                 <p class="mb-1"><%= truncate(record.description, length: 100) %></p>
+#               </div>
+#             <% end %>
+#           </div>
+#         <% else %>
+#           <div class="alert alert-info">
+#             No medical records available.
+#           </div>
+#         <% end %>
+#       </div>
+#     </div>
+#   </div>
+# </div>
+
+# <!-- app/views/patient_portal/appointments.html.erb -->
+# <div class="container mt-4">
+#   <div class="d-flex justify-content-between align-items-center mb-4">
+#     <h1>My Appointments</h1>
+#     <%= link_to 'Request New Appointment', patient_portal_request_appointment_path, class: 'btn btn-primary' %>
+#   </div>
+  
+#   <div class="card">
+#     <div class="card-body">
+#       <% if @appointments.any? %>
+#         <ul class="nav nav-tabs" id="appointmentTabs" role="tablist">
+#           <li class="nav-item" role="presentation">
+#             <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab">Upcoming</button>
+#           </li>
+#           <li class="nav-item" role="presentation">
+#             <button class="nav-link" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button" role="tab">Past</button>
+#           </li>
+#         </ul>
+        
+#         <div class="tab-content pt-3" id="appointmentTabsContent">
+#           <!-- Upcoming Appointments -->
+#           <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
+#             <% upcoming = @appointments.where('appointment_date >= ?', Date.today).order(appointment_date: :asc) %>
+#             <% if upcoming.any? %>
+#               <table class="table table-striped">
+#                 <thead>
+#                   <tr>
+#                     <th>Date & Time</th>
+#                     <th>Doctor</th>
+#                     <th>Reason</th>
+#                     <th>Status</th>
+#                   </tr>
+#                 </thead>
+#                 <tbody>
+#                   <% upcoming.each do |appointment| %>
+#                     <tr>
+#                       <td><%= appointment.appointment_date.strftime("%B %d, %Y at %I:%M %p") %></td>
+#                       <td><%= appointment.user.email %></td>
+#                       <td><%= appointment.reason %></td>
+#                       <td><span class="badge bg-<%= appointment.status == 'scheduled' ? 'primary' : (appointment.status == 'completed' ? 'success' : 'danger') %>"><%= appointment.status.humanize %></span></td>
+#                     </tr>
+#                   <% end %>
+#                 </tbody>
+#               </table>
+#             <% else %>
+#               <div class="alert alert-info">
+#                 You don't have any upcoming appointments.
+#               </div>
+#             <% end %>
+#           </div>
+          
+#           <!-- Past Appointments -->
+#           <div class="tab-pane fade" id="past" role="tabpanel">
+#             <% past = @appointments.where('appointment_date < ?', Date.today).order(appointment_date: :desc) %>
+#             <% if past.any? %>
+#               <table class="table table-striped">
+#                 <thead>
+#                   <tr>
+#                     <th>Date & Time</th>
+#                     <th>Doctor</th>
+#                     <th>Reason</th>
+#                     <th>Status</th>
+#                   </tr>
+#                 </thead>
+#                 <tbody>
+#                   <% past.each do |appointment| %>
+#                     <tr>
+#                       <td><%= appointment.appointment_date.strftime("%B %d, %Y at %I:%M %p") %></td>
+#                       <td><%= appointment.user.email %></td>
+#                       <td><%= appointment.reason %></td>
+#                       <td><span class="badge bg-<%= appointment.status == 'scheduled' ? 'primary' : (appointment.status == 'completed' ? 'success' : 'danger') %>"><%= appointment.status.humanize %></span></td>
+#                     </tr>
+#                   <% end %>
+#                 </tbody>
+#               </table>
+#             <% else %>
+#               <div class="alert alert-info">
+#                 You don't have any past appointments.
+#               </div>
+#             <% end %>
+#           </div>
+#         </div>
+#       <% else %>
+#         <div class="alert alert-info">
+#           You don't have any appointments yet.
+#           <%= link_to "Request your first appointment", patient_portal_request_appointment_path, class: "alert-link" %>
+#         </div>
+#       <% end %>
+#     </div>
+#   </div>
+# </div>
+

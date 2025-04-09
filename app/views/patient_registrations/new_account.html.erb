@@ -1,0 +1,43 @@
+<!-- app/views/patient_registrations/new_account.html.erb -->
+<div class="container mt-4">
+  <h1>Create Patient Portal Account</h1>
+  <p class="lead">Creating account for <%= "#{@patient.first_name} #{@patient.last_name}" %></p>
+  
+  <div class="card">
+    <div class="card-body">
+      <%= form_with(model: PatientUser.new, url: patient_create_account_path(@patient), local: true) do |form| %>
+        <% if @patient_user&.errors&.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@patient_user.errors.count, "error") %> prohibited this account from being created:</h4>
+            <ul>
+              <% @patient_user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        
+        <div class="form-group mb-3">
+          <%= form.label :email, class: "form-label" %>
+          <%= form.email_field :email, value: @patient.email, class: "form-control" %>
+        </div>
+        
+        <div class="form-group mb-3">
+          <%= form.label :password, class: "form-label" %>
+          <%= form.password_field :password, class: "form-control" %>
+          <div class="form-text">Minimum 6 characters</div>
+        </div>
+        
+        <div class="form-group mb-3">
+          <%= form.label :password_confirmation, "Confirm Password", class: "form-label" %>
+          <%= form.password_field :password_confirmation, class: "form-control" %>
+        </div>
+        
+        <div class="form-group">
+          <%= form.submit "Create Portal Account", class: "btn btn-primary" %>
+          <%= link_to "Cancel", patient_path(@patient), class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

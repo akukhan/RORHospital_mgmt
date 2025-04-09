@@ -4,7 +4,7 @@ class PatientsController < ApplicationController
 
   # GET /patients or /patients.json
   def index
-    @patients = Patient.all
+    @patients = Patient.order(created_at: :desc)
   end
 
   # GET /patients/1 or /patients/1.json
@@ -53,7 +53,7 @@ class PatientsController < ApplicationController
     @patient.destroy!
 
     respond_to do |format|
-      format.html { redirect_to patients_path, status: :see_other, notice: "Patient was successfully destroyed." }
+      format.html { redirect_to patients_path, status: :see_other, notice: "Patient was successfully deleted." }
       format.json { head :no_content }
     end
   end
