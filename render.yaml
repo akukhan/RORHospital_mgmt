@@ -1,12 +1,12 @@
 databases:
-  - name: mysite
-    databaseName: mysite
+  - name: portal
+    databaseName: hospital_management_development
     user: mysite
     plan: free
 
 services:
   - type: web
-    name: mysite
+    name: portal
     runtime: ruby
     plan: free
     buildCommand: "./bin/render-build.sh"
@@ -21,7 +21,4 @@ services:
         sync: false
       - key: WEB_CONCURRENCY
         value: 2 # sensible default
-      - key: RAILS_ENV
-        value: production
-      - key: RACK_ENV
-        value: production
+        
