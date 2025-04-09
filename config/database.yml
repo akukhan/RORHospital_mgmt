@@ -82,9 +82,10 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
     database: hospital_management_production
-    username: hospital_management
-    password: <%= ENV["HOSPITAL_MANAGEMENT_DATABASE_PASSWORD"] %>
+    username: <%= ENV['POSTGRES_USER'] %>
+    password: <%= ENV['POSTGRES_PASSWORD'] %>
   cache:
     <<: *primary_production
     database: hospital_management_production_cache
