@@ -21,3 +21,7 @@ services:
         sync: false
       - key: WEB_CONCURRENCY
         value: 2 # sensible default
+      - key: RAILS_ENV
+        value: production
+      - key: RACK_ENV
+        value: production

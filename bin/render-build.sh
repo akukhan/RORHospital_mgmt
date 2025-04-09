@@ -9,5 +9,9 @@ bundle exec rails assets:clean
 # If you're using a Free instance type, you need to
 # perform database migrations in the build command.
 # Uncomment the following line:
-
-bundle exec rails db:migrate
+if [ -n "$DATABASE_URL" ]; then
+  echo "Running database migrations..."
+  bundle exec rails db:migrate
+else
+  echo "DATABASE_URL is not set, skipping migrations"
+fi
