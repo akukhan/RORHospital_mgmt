@@ -1,0 +1,45 @@
+<div id="<%= dom_id(appointment) %>" >
+  <div class="card h-100 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="card-title mb-0">
+        Appointment on <%= appointment.appointment_date.strftime("%B %d, %Y, %I:%M %p") %>
+      </h5>
+  </div>
+  <div class="card-body">
+    <p>
+      <strong>Patient ID:</strong> <%= appointment.patient_id %>
+    </p>
+    <p>
+      <strong>Name:
+        <%= appointment.patient.first_name %>
+        <%= appointment.patient.last_name %>
+      </strong>
+    </p>
+      <p>
+        <strong>Dr ID:</strong>
+        <%= appointment.user_id %>
+      </p>
+      <p>
+        <strong>Doctor:</strong>
+        <%= appointment.user.present? ? "Dr. #{appointment.user.email.split('@').first}" : "N/A" %>
+      </p>  
+      <p>
+        <strong>Reason:</strong>
+        <%= appointment.reason %>
+      </p>
+
+      <p>
+        <span class="badge 
+        <%= 
+        appointment.status == "scheduled" ? "bg-success" :
+        appointment.status == "completed" ? "bg-warning" : 
+        appointment.status == "cancelled" ? "bg-danger" : "bg-secondary" %>">
+          <%= appointment.status %>
+        </span>
+      </p>
+    </div>
+    
+
+  </div>
+
+</div>

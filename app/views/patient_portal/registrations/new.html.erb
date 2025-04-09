@@ -1,0 +1,64 @@
+<%# app/views/patient_portal/registrations/new.html.erb %>
+<h2>Patient Registration</h2>
+
+<%= form_for(resource, as: :patient_user, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <h3>Patient Information</h3>
+  <%= fields_for :patient do |p| %>
+    <div class="field">
+      <%= p.label :first_name %><br />
+      <%= p.text_field :first_name, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= p.label :last_name %><br />
+      <%= p.text_field :last_name %>
+    </div>
+
+    <div class="field">
+      <%= p.label :email %><br />
+      <%= p.email_field :email %>
+    </div>
+
+    <div class="field">
+      <%= p.label :phone %><br />
+      <%= p.telephone_field :phone %>
+    </div>
+
+    <div class="field">
+      <%= p.label :date_of_birth %><br />
+      <%= p.date_field :date_of_birth %>
+    </div>
+
+    <div class="field">
+      <%= p.label :address %><br />
+      <%= p.text_area :address %>
+    </div>
+  <% end %>
+
+  <h3>Account Information</h3>
+  <div class="field">
+    <%= f.label :email, "Login Email" %><br />
+    <%= f.email_field :email, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Register" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

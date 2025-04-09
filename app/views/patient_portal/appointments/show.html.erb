@@ -1,0 +1,45 @@
+<h1>Appointment Details</h1>
+
+<div class="card">
+  <div class="card-header">
+    Appointment ID: #<%= @appointment.id %>
+  </div>
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h5>Doctor</h5>
+        <p><%= "Dr. #{@appointment.user.email.split('@').first}" %></p>
+      </div>
+      <div class="col-md-6">
+        <h5>Date & Time</h5>
+        <p><%= @appointment.appointment_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h5>Status</h5>
+        <p><span class="badge 
+        <%= 
+        @appointment.status == "scheduled" ? "bg-success" :
+        @appointment.status == "completed" ? "bg-warning" : 
+        @appointment.status == "cancelled" ? "bg-danger" : "bg-secondary" %>">
+        <%= @appointment.status %></span></p>
+      </div>
+      <div class="col-md-6">
+        <h5>Requested On</h5>
+        <p><%= @appointment.created_at.strftime("%B %d, %Y") %></p>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-12">
+        <h5>Reason for Visit</h5>
+        <p><%= @appointment.reason %></p>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <%= link_to "Back to Appointments", patient_portal_appointments_path, class: "btn btn-secondary" %>
+  </div>
+</div>

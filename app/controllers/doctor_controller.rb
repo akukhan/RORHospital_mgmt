@@ -1,9 +1,11 @@
 class DoctorController < ApplicationController
+
     before_action :ensure_doctor
     
     def dashboard
       @patients = Patient.all
       @patients_by_day = Patient.group_by_day(:created_at).count
+      
     end
     
     private
@@ -14,4 +16,6 @@ class DoctorController < ApplicationController
         redirect_to root_path
       end
     end
-  end
+end
+
+

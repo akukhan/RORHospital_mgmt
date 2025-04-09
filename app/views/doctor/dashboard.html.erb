@@ -1,21 +1,89 @@
+
 <div class="container mt-4">
   <h1>Doctor Dashboard</h1>
   
+  <!-- Simple stats row -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title">Today's Appointments</h5>
+          <h2 class="card-text"><%= Appointment.where(appointment_date: Date.today.beginning_of_day..Date.today.end_of_day).count rescue 0 %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title">New Patients (Week)</h5>
+          <h2 class="card-text"><%= Patient.where('created_at >= ?', 1.week.ago).count %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light">
+        <div class="card-body text-center">
+          <h5 class="card-title">Total Patients</h5>
+          <h2 class="card-text"><%= Patient.count %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patient Registration Graph -->
   <div class="card mb-4">
     <div class="card-header">
       <h3>Patient Registration Graph</h3>
     </div>
-    <div class="card-body" style="height: 300px;">       
-        <%= line_chart @patients_by_day %>      
+    <div class="card-body" style="height: 300px;">      
+      <%= line_chart @patients_by_day %>      
     </div>
   </div>
-  
+  <div class="card mb-4">
+  <div class="card-header">
+    <h3>Upcoming Appointments</h3>
+  </div>
+  <div class="card-body">
+    <% upcoming_appointments = Appointment.where("appointment_date > ? AND appointment_date <= ?", 
+                                               DateTime.now, 
+                                               DateTime.now + 7.days)
+                                              .includes(:patient)
+                                         .order(:appointment_date) %>
+    <% if upcoming_appointments.any? %>
+      <div class="list-group">
+        <% upcoming_appointments.each do |appointment| %>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong><%= appointment.appointment_date.strftime("%b %d, %Y at %H:%M") %></strong> - 
+              <%= "#{appointment.patient.first_name} #{appointment.patient.last_name}" %>
+            </div>
+            <div>
+            <span class="badge 
+            <%= 
+            appointment.status == "scheduled" ? "bg-success" :
+            appointment.status == "completed" ? "bg-warning" : 
+            appointment.status == "cancelled" ? "bg-danger" : "bg-secondary" %>">
+              <%= appointment.status %>
+            </span>
+              <%= link_to 'View', appointment_path(appointment), class: 'btn btn-sm btn-outline-primary ml-2' if defined?(appointment_path) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info">No upcoming appointments in the next 7 days.</div>
+    <% end %>
+  </div>
+</div>
+ 
+  <!-- Patient List -->
   <div class="card">
-    <div class="card-header">
+    <div class="card-header d-flex justify-content-between align-items-center">
       <h3>Patient List</h3>
+      <input type="text" class="form-control" placeholder="Search patients..." id="patientSearch" style="width: 250px;">
     </div>
     <div class="card-body">
-      <table class="table table-striped">
+      <table class="table table-striped" id="patientTable">
         <thead>
           <tr>
             <th>Name</th>
@@ -32,7 +100,10 @@
               <td><%= patient.email %></td>
               <td><%= patient.phone %></td>
               <td><%= patient.date_of_birth %></td>
-              <td><%= link_to 'View', patient, class: 'btn btn-sm btn-info' %></td>
+              <td>
+                <%= link_to 'View', patient, class: 'btn btn-sm btn-info' %>
+                <%= link_to 'Appointments', appointments_path(patient_id: patient.id), class: 'btn btn-sm btn-outline-primary' if defined?(appointments_path) %>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -40,3 +111,21 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.getElementById('patientSearch').addEventListener('keyup', function() {
+    var input = this.value.toLowerCase();
+    var rows = document.getElementById('patientTable').getElementsByTagName('tr');
+    
+    for (var i = 1; i < rows.length; i++) {
+      var nameCell = rows[i].cells[0].textContent.toLowerCase();
+      var emailCell = rows[i].cells[1].textContent.toLowerCase();
+      
+      if (nameCell.indexOf(input) > -1 || emailCell.indexOf(input) > -1) {
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    }
+  });
+</script>

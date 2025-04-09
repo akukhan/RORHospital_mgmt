@@ -1,7 +1,19 @@
 <div class="container mt-5">
-  <div class="jumbotron">
-    <h1>Hospital Management System</h1>
-    <p>Please login to continue</p>
-    <%= link_to "Login", new_user_session_path, class: "btn btn-primary" %>
+  <div class="jumbotron text-center p-5 bg-light rounded">
+    <h1 class="display-4">Welcome to the Hospital Management System</h1>
+    <p class="lead">Manage your hospital operations with ease. Choose your portal:</p>
+    
+    <div class="d-flex justify-content-center gap-3 my-4">
+      <!-- Staff Login Button -->
+      <%= link_to "Staff Login", new_user_session_path, class: "btn btn-primary btn-lg" %>
+      
+      <!-- Patient Login Button -->
+      <%= link_to "Patient Login", new_patient_user_session_path, class: "btn btn-info btn-lg" %>
+    </div>
+    
+    <hr class="my-4">    
+    <p>New patient? Create an account to access your appointment portal and view your health records.</p>
+    <%= link_to "Patient Registration", new_patient_user_registration_path, class: "btn btn-success btn-md" %> 
+   
   </div>
 </div>

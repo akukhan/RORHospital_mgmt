@@ -1,0 +1,43 @@
+<!-- app/views/patient_portal/request_appointment.html.erb -->
+<div class="container mt-4">
+  <h1>Request New Appointment</h1>
+  
+  <div class="card">
+    <div class="card-body">
+      <%= form_with(model: @appointment, url: patient_portal_create_appointment_request_path, local: true) do |form| %>
+        <% if @appointment.errors.any? %>
+          <div class="alert alert-danger">
+            <h4><%= pluralize(@appointment.errors.count, "error") %> prohibited this request from being saved:</h4>
+            <ul>
+              <% @appointment.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        
+        <div class="mb-3">
+          <%= form.label :user_id, "Select Doctor", class: "form-label" %>
+          <%= form.collection_select :user_id, @doctors, :id, :email, 
+              { prompt: "Choose a doctor" }, class: "form-select" %>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :appointment_date, "Preferred Date and Time", class: "form-label" %>
+          <%= form.datetime_local_field :appointment_date, class: "form-control" %>
+          <div class="form-text">Please select a date at least 24 hours in advance</div>
+        </div>
+        
+        <div class="mb-3">
+          <%= form.label :reason, "Reason for Visit", class: "form-label" %>
+          <%= form.text_area :reason, rows: 4, class: "form-control" %>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+          <%= form.submit "Submit Request", class: "btn btn-primary" %>
+          <%= link_to "Cancel", patient_portal_appointments_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

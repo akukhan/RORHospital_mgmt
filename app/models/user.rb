@@ -5,5 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   enum :role, { reception: 0, doctor: 1}
+
+  has_many :appointments
   validates :role, presence: true
 end

@@ -66,4 +66,5 @@ gem "devise", "~> 4.9"
 gem 'groupdate'
 gem 'chartkick'
 gem 'dotenv-rails', groups: [:development, :test]
-
+gem 'simple_calendar'
+gem 'kaminari', '~> 1.2', '>= 1.2.2'

@@ -1,0 +1,43 @@
+<!-- app/views/appointments/doctor_schedule.html.erb -->
+<div class="container mt-4">
+  <h1>My Appointment Schedule</h1>
+  
+  <div class="card">
+    <div class="card-header">
+      <h3>Upcoming Appointments</h3>
+    </div>
+    <div class="card-body">
+      <% if @appointments.any? %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Patient</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @appointments.each do |appointment| %>
+              <tr>
+                <td><%= appointment.appointment_date.strftime("%B %d, %Y at %I:%M %p") %></td>
+                <td><%= "#{appointment.patient.first_name} #{appointment.patient.last_name}" %></td>
+                <td><%= appointment.reason %></td>
+                <td><span class="badge <%= appointment.status == 'scheduled' ? 'bg-primary' : (appointment.status == 'completed' ? 'bg-success' : 'bg-danger') %>"><%= appointment.status %></span></td>
+                <td>
+                  <%= link_to 'View', appointment, class: 'btn btn-sm btn-info' %>
+                  <%= link_to 'Update', edit_appointment_path(appointment), class: 'btn btn-sm btn-warning' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="alert alert-info">
+          You don't have any upcoming appointments.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

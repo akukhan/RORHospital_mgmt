@@ -1,0 +1,37 @@
+<!-- app/views/patient_portal/appointments/new.html.erb -->
+<div class="container">
+  <h1>Schedule New Appointment</h1>
+  
+  <%= form_with(model: [:patient_portal, @appointment], local: true) do |form| %>
+    <% if @appointment.errors.any? %>
+      <div class="alert alert-danger">
+        <h2><%= pluralize(@appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+        <ul>
+          <% @appointment.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="form-group mb-3">
+      <%= form.label :user_id, "Select Doctor" %>
+      <%= form.collection_select :user_id, @doctors, :id, :email, {prompt: "Choose a doctor"}, {class: "form-control"} %>
+    </div>
+    
+    <div class="form-group mb-3">
+      <%= form.label :appointment_date %>
+      <%= form.datetime_local_field :appointment_date, class: "form-control" %>
+    </div>
+    
+    <div class="form-group mb-3">
+      <%= form.label :reason %>
+      <%= form.text_area :reason, class: "form-control", rows: 3 %>
+    </div>
+    
+    <div class="form-group">
+      <%= form.submit "Schedule Appointment", class: "btn btn-primary" %>
+      <%= link_to "Cancel", patient_portal_dashboard_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

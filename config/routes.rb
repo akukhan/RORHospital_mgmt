@@ -1,21 +1,39 @@
+
 Rails.application.routes.draw do
+  # Patient authentication (needs to be first)
+  devise_for :patient_users, 
+    path: 'patient_portal',
+    path_names: { sign_in: 'login', sign_out: 'logout' },
+    controllers: {registrations: 'patient_portal/registrations'}
+  
+  # Staff/doctor authentication
   devise_for :users
-
-  resources :patients
-
+  
+  # Patient Portal routes - this will be protected by patient_user authentication
+  namespace :patient_portal do   
+    
+    # Keep these routes
+    get 'dashboard', to: 'dashboard#index'
+    resources :appointments, only: [:index, :new, :create, :show]
+  end
+  
+  # Routes for staff to create patient accounts
+  get '/patients/:patient_id/new_account', to: 'patient_registrations#new_account', as: 'patient_new_account'
+  post '/patients/:patient_id/create_account', to: 'patient_registrations#create_account', as: 'patient_create_account'
+  get 'new_account', to: 'patient_registrations#new_account'
+  post 'create_account', to: 'patient_registrations#create_account'
+  
+  # Doctor routes - these should be protected by user authentication
   get 'doctor/dashboard', to: 'doctor#dashboard', as: 'doctor_dashboard'
-
-  root to:'home#index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get 'doctor/schedule', to: 'appointments#doctor_schedule', as: 'doctor_schedule'
+  
+  # Standard resources
+  resources :patients 
+  resources :appointments
+  
+  # Root route
+  root to: 'home#index'
+  
+  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

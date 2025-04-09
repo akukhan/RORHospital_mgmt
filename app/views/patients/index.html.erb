@@ -1,16 +1,53 @@
-<p style="color: green"><%= notice %></p>
-
+<%# app/views/patients/index.html.erb %>
 <% content_for :title, "Patients" %>
 
-<%= link_to "New patient", new_patient_path %>
-<h1>Patients</h1>
-
-<div id="patients">
-  <% @patients.each do |patient| %>
-    <%= render patient %>
-    <p>
-      <%= link_to "Show this patient", patient %>
-    </p>
+<div class="container my-5">
+  <% if notice %>
+    <div class="alert alert-success">
+      <%= notice %>
+    </div>
   <% end %>
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Patients</h1>
+    <%= link_to "New Patient", new_patient_path, class: "btn btn-primary" %>
+  </div>
+  <div class="mb-4">
+    <input type="text" id="patientSearch" placeholder="Search patients by name or email..." class="form-control">
+  </div>
+  <div class="row" id="patientsRow">
+    <% @patients.each do |patient| %>
+      <div class="col-md-4 mb-4 patient-card" data-search="<%= "#{patient.first_name} #{patient.last_name} #{patient.email}" %>">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header bg-info text-white">
+            <h5 class="card-title mb-0"><%= patient.first_name %> <%= patient.last_name %></h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              <strong>Email:</strong> <%= patient.email %><br>
+              <strong>Phone:</strong> <%= patient.phone %><br>
+              <strong>Date of Birth:</strong>
+              <%= patient.date_of_birth ? patient.date_of_birth.strftime("%B %d, %Y") : "N/A" %>
+            </p>
+          </div>
+          <div class="card-footer text-center">
+            <%= link_to "View Details", patient, class: "btn btn-outline-primary btn-sm" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<script>
+  document.getElementById('patientSearch').addEventListener('keyup', function() {
+    var filter = this.value.toLowerCase();
+    var patientCards = document.querySelectorAll('.patient-card');
+    patientCards.forEach(function(card) {
+      var text = card.getAttribute('data-search').toLowerCase();
+      card.style.display = text.indexOf(filter) > -1 ? '' : 'none';
+    });
+  });
+</script>
+
 

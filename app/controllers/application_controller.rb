@@ -4,11 +4,28 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   def after_sign_in_path_for(resource)
-    if resource.doctor?
-      doctor_dashboard_path
+    # Handle different user types
+    if resource.is_a?(User)
+      if resource.respond_to?(:doctor?) && resource.doctor?
+        doctor_dashboard_path
+      else
+        patients_path
+      end
+    elsif resource.is_a?(PatientUser)
+      # Redirect patient users to their dashboard
+      patient_portal_dashboard_path
     else
-      patients_path
+      # Default path
+      root_path
     end
+  end
+  
+  private
+  
+  # Helper method to identify if we're in a patient portal controller
+  def patient_portal_controller?
+    controller_path.start_with?('patient_portal/') || 
+    devise_controller? && resource_name == :patient_user
   end
 
 end

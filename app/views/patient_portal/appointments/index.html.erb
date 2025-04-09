@@ -1,0 +1,38 @@
+<h1>My Appointments</h1>
+
+<% if @appointments.empty? %>
+  <p>You don't have any appointments yet.</p>
+<% else %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Doctor</th>
+        <th>Date & Time</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @appointments.each do |appointment| %>
+        <tr>
+          <td><%= "Dr. #{appointment.user.email.split('@').first}" %></td>
+          <td><%= appointment.appointment_date.strftime("%B %d, %Y at %I:%M %p") %></td>
+          <td><%= appointment.reason %></td>
+          <td><span class="badge 
+        <%= 
+        appointment.status == "scheduled" ? "bg-success" :
+        appointment.status == "completed" ? "bg-warning" : 
+        appointment.status == "cancelled" ? "bg-danger" : "bg-secondary" %>"><%= appointment.status %></span></td>
+          <td>
+            <%= link_to "View Details", patient_portal_appointment_path(appointment), class: "btn btn-sm btn-primary" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<div class="mt-4">
+  <%= link_to "Request New Appointment", new_patient_portal_appointment_path, class: "btn btn-success" %>
+</div>

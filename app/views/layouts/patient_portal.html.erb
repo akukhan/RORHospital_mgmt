@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Patient Portal | Hospital Management</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+      <div class="container">        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <%= link_to "Dashboard", patient_portal_dashboard_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "My Appointments", patient_portal_appointments_path, class: "nav-link" %>
+            </li>
+            
+          </ul>
+          <ul class="navbar-nav ms-auto">
+            <% if patient_user_signed_in? %>
+              <li class="nav-item">
+                <span class="nav-link">Hello, <%= current_patient_user.patient.first_name %></span>
+              </li>
+              <li class="nav-item">
+                <%= button_to "Logout", destroy_patient_user_session_path, method: :delete, class: "btn nav-link" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Login", new_patient_user_session_path, class: "nav-link" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-3">
+      <% if notice %>
+        <div class="alert alert-success"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-danger"><%= alert %></div>
+      <% end %>
+      
+      <%= yield %>
+    </div>
+    
+    <footer class="mt-5 py-3 bg-light">
+      <div class="container text-center">
+        <p class="text-muted mb-0">Patient Portal &copy; <%= Date.today.year %> Hospital Management System</p>
+      </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+

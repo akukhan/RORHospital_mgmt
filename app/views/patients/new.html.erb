@@ -1,11 +1,16 @@
-<% content_for :title, "New patient" %>
+<% content_for :title, "New Patient" %>
 
-<h1>New patient</h1>
-
-<%= render "form", patient: @patient %>
-
-<br>
-
-<div>
-  <%= link_to "Back to patients", patients_path %>
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">New Patient</h2>
+    </div>
+    <div class="card-body">
+      <%= render "form", patient: @patient %>
+    </div>
+    <div class="card-footer text-end">
+      <%= link_to "Back to Patients", patients_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
 </div>
+
