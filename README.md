@@ -3,10 +3,10 @@
 ### This is a Rails application that proivdes separate portals for recptions, doctors, and patients in a medical setting. The application allows receptionists to register and manage patients, while doctors can views patient information and visialize patient registration statistics , and patients can manage their appointments.
 
 ### Desktop View
-![Desktop Screenshot](screenshots/desktop.png)
+![Desktop Screenshot](screenshots/desktop.PNG)
 
 ### Mobile View
-![Mobile Screenshot](screenshots/mobilerecptionist.png)
+![Mobile Screenshot](screenshots/mobilerecptionist.PNG)
 
 ## Features
 
