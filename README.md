@@ -8,6 +8,24 @@
 ### Mobile View
 ![Mobile Screenshot](screenshots/mobilerecptionist.PNG)
 
+[Live Link for the site](https://mysite-ngp8.onrender.com/)
+
+```
+staff
+email:doctor@example.com 
+password: password123
+or 
+email:doctor1@example.com 
+password: password123
+or 
+email: 'receptionist@example.com',
+password: 'password123',
+Patient:
+email: helloworldhello@yopmail.com
+password: password123
+
+```
+
 ## Features
 
 ### Authentication
@@ -18,7 +36,7 @@
  - Secure authenciation using Devise.
  - Password reset using registered email.
 
-###🧾  Receptionist Portal
+### 🧾  Receptionist Portal
   - Register new patients.
   - View list of all patients.
   - Views details patients information.

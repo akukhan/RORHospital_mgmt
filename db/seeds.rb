@@ -25,9 +25,9 @@ User.create!(
 
 # Create patients
 # Start 9 days ago
-start_date = Date.today - 9.days
 
 10.times do |i|
+  start_date = Date.today - 9.days
     record_date = start_date + i.days
     patient_count = rand(1..10)
 
